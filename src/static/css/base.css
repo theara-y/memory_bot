@@ -1,0 +1,29 @@
+body {
+  background: black;
+  color: white;
+  font-family: 'Lucida Console', monospace;
+}
+
+a,
+a:active {
+  color: lightskyblue;
+}
+
+label,
+input,
+form button {
+  display: block;
+  margin: 3px 0;
+}
+
+form button {
+  margin-top: 5px;
+}
+
+.success-msgs {
+  color: lime;
+}
+
+.error-msgs {
+  color: tomato;
+}
