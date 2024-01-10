@@ -12,7 +12,9 @@
     {% if memories %}
         {% for memory in memories %}
             <div>
-            <a href="{{ url_for('app.edit_memory', id=memory.id) }}">Edit</a> {{ memory.prompt }}
+            <a href="{{ url_for('app.edit_memory', id=memory.id) }}">Edit</a>
+            <a href="{{ url_for('app.delete_memory', id=memory.id) }}">Delete</a>
+            {{ memory.prompt }}
             </div>
         {% endfor %}
     {% else %}

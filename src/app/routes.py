@@ -62,3 +62,14 @@ def edit_memory(id):
         flash('Memory updated', category='success')
 
     return render_template('app/edit_memory.html', form=form)
+
+@bp.route('/delete_memory/<int:id>', methods=['GET'])
+def delete_memory(id):
+    memory = Memory.query.filter_by(id=id, user_id=current_user.id).first()
+
+    if memory:
+        db.session.delete(memory)
+        db.session.commit()
+        flash('Memory deleted', category='success')
+
+    return redirect(url_for('app.view_memories'))
