@@ -47,6 +47,13 @@ def view_memories():
     memories = Memory.query.filter_by(user_id=current_user.id).all()
     return render_template('app/view_memories.html', memories=memories)
 
+
+@bp.route('/view_memory/<int:id>', methods=['GET'])
+def view_memory(id):
+    memory = Memory.query.filter_by(id=id, user_id=current_user.id).first()
+    return render_template('app/view_memory.html', memory=memory)
+
+
 @bp.route('/edit_memory/<int:id>', methods=['GET', 'POST'])
 def edit_memory(id):
     memory = Memory.query.filter_by(id=id, user_id=current_user.id).first()
@@ -60,8 +67,10 @@ def edit_memory(id):
         memory.answer = form.answer.data
         db.session.commit()
         flash('Memory updated', category='success')
+        return redirect(url_for('app.view_memory', id=id))
 
     return render_template('app/edit_memory.html', form=form)
+
 
 @bp.route('/delete_memory/<int:id>', methods=['GET'])
 def delete_memory(id):

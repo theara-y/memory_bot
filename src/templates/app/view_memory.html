@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% from 'macros.html' import link %}
+
+{% block content %}
+    <h2>Navigation</h2>
+    {{ link('app.dashboard', 'Dashboard') }}
+    {{ link('app.create_memory', 'Create memory') }}
+
+    <h1>Memory</h1>
+
+    <a href="{{ url_for('app.edit_memory', id=memory.id) }}">Edit</a>
+    <a href="{{ url_for('app.delete_memory', id=memory.id) }}">Delete</a>
+    <p>Prompt: {{ memory.prompt }}</p>
+    <p>Answer: {{ memory.answer }}</p>
+    <p>Status: {{ memory.training_status }}</p>
+    <p>Recallable Duration: {{ memory.recall_duration_days }}</p>
+    <p>Total Recall Attempts: {{ memory.total_recall_count }}</p>
+    <p>Total Perfect Recalls: {{ memory.perfect_recall_count }}</p>
+    <p>Total Partial Recalls: {{ memory.partial_recall_count }}</p>
+    <p>Total Failed Recalls: {{ memory.failed_recall_count }}</p>
+    <p>Last Recall Result: {{ memory.last_recall_count }}</p>
+    <p>Next Recall At: {{ memory.next_recall_at }}</p>
+    <p>Last Recall At: {{ memory.last_recall_at }}</p>
+    <p>Created At: {{ memory.created_at }}</p>
+    <p>Last Modified At: {{ memory.last_modified_at }}</p>
+
+{% endblock %}
