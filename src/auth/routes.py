@@ -3,8 +3,9 @@ from flask_login import login_user, logout_user, current_user
 from src.auth.forms import LoginForm, RegisterForm
 from src.models import User
 from src import db
+from . import bp
 
-bp = Blueprint('auth', __name__, url_prefix='/auth')
+# bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
