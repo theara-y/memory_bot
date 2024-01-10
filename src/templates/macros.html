@@ -1,0 +1,9 @@
+{% macro input_errors(field) %}
+    {% for error in field.errors %}
+        <div><span class="error-msgs">{{ error }}</span></div>
+    {% endfor %}
+{% endmacro %}
+
+{% macro link(url, label) %}
+    <p>> <a href="{{ url_for(url) }}">{{ label }}</a></p>
+{% endmacro %}

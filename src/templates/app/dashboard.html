@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 
+{% from 'macros.html' import link %}
+
 {% block content %}
-<p>> <a href="auth/logout">Log Out</a></p>
+<h1>Dashboard</h1>
+<p>Hello, {{ current_user.username }}.</p>
+
+{{ link('app.create_memory', 'Create memory') }}
+{{ link('app.view_memories', 'View memories') }}
+{{ link('auth.logout', 'Log out') }}
+
 {% endblock %}

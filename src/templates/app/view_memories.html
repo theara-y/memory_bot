@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% from 'macros.html' import link %}
+
+{% block content %}
+    <h2>Navigation</h2>
+    {{ link('app.dashboard', 'Dashboard') }}
+    {{ link('app.create_memory', 'Create memory') }}
+
+    <h1>Memories</h1>
+
+    {% if memories %}
+        {% for memory in memories %}
+            <div>
+            {{ memory.prompt }}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No memories</p>
+    {% endif %}
+
+{% endblock %}
