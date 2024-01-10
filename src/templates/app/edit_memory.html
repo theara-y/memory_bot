@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% from 'macros.html' import link, input_errors %}
+
+{% block content %}
+<h1>Edit Memory</h1>
+
+<p>Create a new below.</p>
+
+<form method="post">
+    {{ form.hidden_tag() }}
+
+    {{ form.prompt.label() }}
+    {{ form.prompt(cols="50", rows="3") }}
+    {{ input_errors(form.prompt) }}
+
+    {{ form.answer.label() }}
+    {{ form.answer(cols="50", rows="3") }}
+    {{ input_errors(form.answer)}}
+
+    <button>Update Memory</button>
+</form>
+
+{{ link('app.view_memories', 'View memories') }}
+{{ link('app.dashboard', 'Dashboard') }}
+{% endblock %}

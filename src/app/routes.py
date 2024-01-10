@@ -3,7 +3,7 @@ from flask_login import current_user
 
 from .. import db
 from ..models import Memory
-from .forms import CreateMemoryForm
+from .forms import CreateMemoryForm, EditMemoryForm
 
 
 bp = Blueprint('app', __name__)
@@ -46,3 +46,19 @@ def create_memory():
 def view_memories():
     memories = Memory.query.filter_by(user_id=current_user.id).all()
     return render_template('app/view_memories.html', memories=memories)
+
+@bp.route('/edit_memory/<int:id>', methods=['GET', 'POST'])
+def edit_memory(id):
+    memory = Memory.query.filter_by(id=id, user_id=current_user.id).first()
+    form = EditMemoryForm(
+        prompt=memory.prompt,
+        answer=memory.answer
+    )
+
+    if form.validate_on_submit():
+        memory.prompt = form.prompt.data
+        memory.answer = form.answer.data
+        db.session.commit()
+        flash('Memory updated', category='success')
+
+    return render_template('app/edit_memory.html', form=form)
