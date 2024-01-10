@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% from 'macros.html' import link %}
+
+{% block content %}
+    <p>Here is the prompt:</p>
+    <p>{{ memory.prompt }}</p>
+
+    <p>Show answer</p>
+    <p>Answer: {{ memory.answer }}</p>
+
+    <p>How did you do?</p>
+
+    <form method="post">
+        {{ form.hidden_tag() }}
+
+        {% for option in form.result %}
+            {{ option.label() }}
+            {{ option }}
+        {% endfor %}
+
+        <button>Confirm</button>
+    </form>
+{% endblock %}

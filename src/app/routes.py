@@ -1,9 +1,9 @@
-from flask import Blueprint, redirect, render_template, url_for, flash
+from flask import Blueprint, redirect, render_template, url_for, flash, request
 from flask_login import current_user
 
 from .. import db
 from ..models import Memory
-from .forms import CreateMemoryForm, EditMemoryForm
+from .forms import CreateMemoryForm, EditMemoryForm, SubmitTestForm
 
 
 bp = Blueprint('app', __name__)
@@ -82,3 +82,13 @@ def delete_memory(id):
         flash('Memory deleted', category='success')
 
     return redirect(url_for('app.view_memories'))
+
+@bp.route('/test_memory/<int:id>', methods=['GET', 'POST'])
+def test_memory(id):
+    memory = Memory.query.filter_by(id=id, user_id=current_user.id).first()
+
+    form = SubmitTestForm()
+    if form.validate_on_submit():
+        pass
+
+    return render_template('app/test_memory.html', memory=memory, form=form)
