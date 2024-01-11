@@ -1,0 +1,8 @@
+table, th, td {
+    border: 1px dashed white;
+    border-spacing: 5px;
+}
+
+td {
+    padding: 5px;
+}

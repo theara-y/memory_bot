@@ -28,3 +28,7 @@ form button {
 .error-msgs {
   color: tomato;
 }
+
+.warning-msgs {
+  color: yellow;
+}

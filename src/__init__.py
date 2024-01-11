@@ -3,12 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
+from flask_moment import Moment
 from config import Config
 
 db = SQLAlchemy()
 login = LoginManager()
 bcrypt = Bcrypt()
 migrate = Migrate()
+moment = Moment()
 
 
 def create_app(config_class=Config):
@@ -19,6 +21,7 @@ def create_app(config_class=Config):
     login.init_app(app)
     bcrypt.init_app(app)
     migrate.init_app(app, db)
+    moment.init_app(app)
 
     from src.auth import bp as auth_routes
     app.register_blueprint(auth_routes)

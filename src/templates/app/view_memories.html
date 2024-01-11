@@ -1,26 +1,55 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="/static/css/app/view_memories.css">
+{% endblock %}
+
 {% from 'macros.html' import link %}
 
 {% block content %}
-    <h2>Navigation</h2>
-    {{ link('app.dashboard', 'Dashboard') }}
-    {{ link('app.create_memory', 'Create memory') }}
+{{ link('app.dashboard', 'Back to Dashboard') }}
 
-    <h1>Memories</h1>
+<h1>Memories</h1>
+{{ link('app.create_memory', 'Create a new memory') }}
 
-    {% if memories %}
-        {% for memory in memories %}
-            <div>
-                <a href="{{ url_for('app.test_memory', id=memory.id) }}">Test</a>
-                <a href="{{ url_for('app.view_memory', id=memory.id) }}">View</a>
-                <a href="{{ url_for('app.edit_memory', id=memory.id) }}">Edit</a>
-                <a href="{{ url_for('app.delete_memory', id=memory.id) }}">Delete</a>
-                {{ memory.prompt }}
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No memories</p>
-    {% endif %}
+{% if memories %}
+<table>
+    <tr>
+        <th></th>
+        <th>Prompt</th>
+        <th>Last Result</th>
+        <th>Perfect</th>
+        <th>Partial</th>
+        <th>Failed</th>
+        <th>Total</th>
+        <th>Next Recall</th>
+        <th>Last Recall</th>
+        <th colspan="2"></th>
+    </tr>
+    {% for memory in memories %}
+    <tr>
+        <td><a href="{{ url_for('app.view_memory', id=memory.id) }}">View</a></td>
+        <td>{{ memory.prompt }}</td>
+        {% if memory.last_recall_outcome == 'perfect' %}
+        <td class="success-msgs">{{ memory.last_recall_outcome }}</td>
+        {% elif memory.last_recall_outcome == 'partial' %}
+        <td class="warning-msgs">{{ memory.last_recall_outcome }}</td>
+        {% else %}
+        <td class="error-msgs">{{ memory.last_recall_outcome }}</td>
+        {% endif %}
+        <td>{{ memory.perfect_recall_count }}</td>
+        <td>{{ memory.partial_recall_count }}</td>
+        <td>{{ memory.failed_recall_count }}</td>
+        <td>{{ memory.total_recall_count }}</td>
+        <td>{{ moment(memory.next_recall_at).format('MMM D YYYY, ddd, h:mm a') }} ({{ moment(memory.next_recall_at).fromNow() }})</td>
+        <td>{{ moment(memory.last_recall_at).fromNow() }}</td>
+        <td><a href="{{ url_for('app.edit_memory', id=memory.id) }}">Edit</a></td>
+        <td><a href="{{ url_for('app.delete_memory', id=memory.id) }}">Delete</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No memories</p>
+{% endif %}
 
 {% endblock %}
