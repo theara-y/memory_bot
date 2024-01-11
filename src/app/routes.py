@@ -5,6 +5,7 @@ from .. import db
 from ..models import Memory
 from .forms import CreateMemoryForm, EditMemoryForm, SubmitTestForm
 
+from datetime import datetime, timedelta
 
 bp = Blueprint('app', __name__)
 
@@ -83,12 +84,39 @@ def delete_memory(id):
 
     return redirect(url_for('app.view_memories'))
 
+
 @bp.route('/test_memory/<int:id>', methods=['GET', 'POST'])
 def test_memory(id):
     memory = Memory.query.filter_by(id=id, user_id=current_user.id).first()
 
     form = SubmitTestForm()
     if form.validate_on_submit():
-        pass
+        memory.last_recall_outcome = form.result.data
+        memory.last_recall_at = datetime.utcnow()
+        memory.last_modified_at = datetime.utcnow()
+        memory.total_recall_count += 1
+
+        if form.result.data == 'perfect':
+            memory.perfect_recall_count += 1
+            if memory.recall_duration_days == 0:
+                memory.recall_duration_days = 1
+            else:
+                memory.recall_duration_days *= 2
+
+        elif form.result.data == 'partial':
+            memory.partial_recall_count += 1
+            memory.recall_duration_days = 1
+
+        else:
+            memory.failed_recall_count += 1
+            memory.recall_duration_days = 1
+
+        memory.next_recall_at = datetime.utcnow() + timedelta(days=memory.recall_duration_days)
+
+        db.session.commit()
+
+        flash('Memory updated', category='success')
+        
+        return redirect(url_for('app.view_memories'))
 
     return render_template('app/test_memory.html', memory=memory, form=form)
