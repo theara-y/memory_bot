@@ -1,5 +1,7 @@
 from flask import Blueprint, redirect, render_template, url_for, flash, request
 from flask_login import current_user
+from sqlalchemy import or_
+from sqlalchemy.sql import func
 
 from .. import db
 from ..models import Memory
@@ -115,8 +117,28 @@ def test_memory(id):
 
         db.session.commit()
 
-        flash('Memory updated', category='success')
-        
-        return redirect(url_for('app.view_memories'))
+        flash('Result submitted', category='success')
+
+        return redirect(url_for('app.next_memory_test'))
 
     return render_template('app/test_memory.html', memory=memory, form=form)
+
+
+@bp.route('/next_memory_test', methods=['GET'])
+def next_memory_test():
+    current_time = datetime.utcnow()
+
+    memory = Memory.query.filter(
+        Memory.user_id==current_user.id,
+        Memory.training_status=='active',
+        or_(
+            Memory.next_recall_at.is_(None),
+            Memory.next_recall_at <= current_time
+        )
+    ).order_by(func.random()).first()
+
+    if not memory:
+        flash('Training completed for today. Good job!', category='success')
+        return redirect(url_for('app.view_memories'))
+
+    return redirect(url_for('app.test_memory', id=memory.id))
