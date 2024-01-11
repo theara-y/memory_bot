@@ -1,24 +1,46 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="/static/css/app/test_memory.css">
+{% endblock %}
+
 {% from 'macros.html' import link %}
 
 {% block content %}
-    <p>Here is the prompt:</p>
-    <p>{{ memory.prompt }}</p>
+    <div class="box">
+        <p class="centered-text">{{ memory.prompt }}</p>
+    </div>
 
-    <p>Show answer</p>
-    <p>Answer: {{ memory.answer }}</p>
+    <div class="box">
+        <div class="hidden-content">
+            <p class="centered-text">{{ memory.answer }}</p>
 
-    <p>How did you do?</p>
+            <legend>Choose an option:</legend>
 
-    <form method="post">
-        {{ form.hidden_tag() }}
+            <form method="post">
+                {{ form.hidden_tag() }}
+        
+                {% for option in form.result %}
+                    <div class="flex">
+                        {{ option }}
+                        <span class="option-selector">> </span>
+                        {{ option.label() }}
+                    </div>
+                {% endfor %}
+        
+                <button>Confirm</button>
+            </form>
+        </div>
+        <p class="content-cover centered-text">Click to Show Answer</p>
+    </div>
+{% endblock %}
 
-        {% for option in form.result %}
-            {{ option.label() }}
-            {{ option }}
-        {% endfor %}
-
-        <button>Confirm</button>
-    </form>
+{% block scripts %}
+<script>
+    $('.content-cover').on('click', function() {
+        console.log('clicking')
+        $(this).css('opacity', 0).css('z-index', -1)
+        $('.hidden-content').css('opacity', 100)
+    })
+</script>
 {% endblock %}

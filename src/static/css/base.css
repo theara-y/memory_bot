@@ -2,6 +2,7 @@ body {
   background: black;
   color: white;
   font-family: 'Lucida Console', monospace;
+  box-sizing: border-box;
 }
 
 a,
@@ -13,11 +14,11 @@ label,
 input,
 form button {
   display: block;
-  margin: 3px 0;
+  /* margin: 3px 0; */
 }
 
 form button {
-  margin-top: 5px;
+  /* margin-top: 5px; */
 }
 
 .success-msgs {
