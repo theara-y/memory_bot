@@ -25,7 +25,23 @@ def index():
 
 @bp.route('/dashboard')
 def dashboard():
-    return render_template('app/dashboard.html')
+    current_timestamp = datetime.utcnow()
+
+    stats = db.session.query(
+        db.func.count().filter(Memory.user_id==current_user.id).label('total_memories'),
+        db.func.count().filter(Memory.user_id==current_user.id, Memory.training_status=='active').label('active'),
+        db.func.count().filter(Memory.user_id==current_user.id, Memory.training_status=='inactive').label('inactive'),
+        db.func.count().filter(Memory.user_id==current_user.id, Memory.training_status=='completed').label('completed'),
+        db.func.sum(Memory.total_recall_count).filter(Memory.user_id==current_user.id).label('total_recall_attempts'),
+        db.func.count().filter(Memory.user_id==current_user.id, Memory.training_status=='active', Memory.last_recall_outcome=='perfect').label('perfect'),
+        db.func.count().filter(Memory.user_id==current_user.id, Memory.training_status=='active', Memory.last_recall_outcome=='partial').label('partial'),
+        db.func.count().filter(Memory.user_id==current_user.id, Memory.training_status=='active', Memory.last_recall_outcome=='failed').label('failed'),
+        db.func.max(Memory.last_recall_at).filter(Memory.user_id==current_user.id, Memory.training_status=='active').label('last_recall_at'),
+        db.func.min(Memory.next_recall_at).filter(Memory.user_id==current_user.id, Memory.training_status=='active').label('next_recall_at'),
+        db.func.count().filter(Memory.user_id==current_user.id, Memory.training_status=='active', Memory.next_recall_at<=current_timestamp).label('memories_to_test'),
+    ).one()
+
+    return render_template('app/dashboard.html', stats=stats)
 
 
 @bp.route('/create_memory', methods=['GET', 'POST'])

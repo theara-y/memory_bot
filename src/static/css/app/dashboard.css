@@ -1,0 +1,46 @@
+table, th, td {
+    border: 1px dashed white;
+    margin-top: 26px;
+}
+
+.bar {
+    width: 300px;
+    height: 26px;
+}
+
+#perfect-bar {
+    width: 100%;
+    height: 100%;
+    background-color: lime;
+}
+
+#partial-bar {
+    width: 100%;
+    height: 100%;
+    background: yellow;
+}
+
+#failed-bar {
+    width: 100%;
+    height: 100%;
+    background: tomato;
+}
+
+.appt-box {
+    margin-bottom: 15px;
+}
+
+.appt {
+    border: 1px solid white;
+    padding: 5px;
+    font-weight: bold;
+    color: black;
+}
+
+.next-appt {
+    background: yellow;
+}
+
+.last-appt {
+    background: lime;
+}

@@ -1,13 +1,91 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="/static/css/app/dashboard.css">
+{% endblock %}
+
 {% from 'macros.html' import link %}
 
 {% block content %}
+{{ link('auth.logout', 'Log out') }}
+
 <h1>Dashboard</h1>
 <p>Hello, {{ current_user.username }}.</p>
 
-{{ link('app.create_memory', 'Create memory') }}
-{{ link('app.view_memories', 'View memories') }}
-{{ link('auth.logout', 'Log out') }}
+<div class="appt-box">
+<span class="appt next-appt">Next recall test {{ moment(stats.next_recall_at).fromNow() }} on {{ moment(stats.next_recall_at).format('MMM DD YYYY @ h:mm a') }}</span>
+</div>
+<div class="appt-box">
+<span class="appt last-appt">Last recall test was {{ moment(stats.last_recall_at).fromNow() }} on {{ moment(stats.last_recall_at).format('MMM DD YYYY @ h:mm a') }}</span>
+</div>
 
+{% if stats.memories_to_test %}
+<p>There are {{ stats.memories_to_test }} pending memories.</p>
+{{ link('app.next_memory_test', 'Test memories') }}
+{% endif %}
+
+<table>
+    <tr>
+        <th colspan="3">Previous Training Results</th>
+    </tr>
+    <tr>
+        <td colspan="2"></td>
+        <td>
+            Count
+        </td>
+    </tr>
+    <tr>
+        <th class="success">Perfect</th>
+        <td class="bar"><div id="perfect-bar" data-val="{{ stats.perfect }}"></div></td>
+        <td class="success">{{ stats.perfect }}</td>
+    </tr>
+    <tr>
+        <th class="warning">Partial</th>
+        <td class="bar"><div id="partial-bar" data-val="{{ stats.partial }}"></div></td>
+        <td class="warning">{{ stats.partial }}</td>
+    </tr>
+    <tr>
+        <th class="error">Failed</th>
+        <td class="bar"><div id="failed-bar" data-val="{{ stats.failed }}"></div></td>
+        <td class="error">{{ stats.failed }}</td>
+    </tr>
+    <tr>
+        <th>Total</th>
+        <td></td>
+        <td>{{ stats.active }}</td>
+    </tr>
+</table>
+
+{{ link('app.create_memory', 'Create a new memory') }}
+
+{% with display = 'View all memories (' ~ stats.total_memories ~ ' Total)' %}
+{{ link('app.view_memories', display) }}
+{% endwith %}
+
+{% with display = 'View active memories (' ~ stats.active ~ ' Total)' %}
+{{ link('app.view_memories', display) }}
+{% endwith %}
+
+{% with display = 'View inactive memories (' ~ stats.inactive ~ ' Total)' %}
+{{ link('app.view_memories', display) }}
+{% endwith %}
+
+{% with display = 'View completed memories (' ~ stats.completed ~ ' Total)' %}
+{{ link('app.view_memories', display) }}
+{% endwith %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const perfect = parseInt($('#perfect-bar').data('val'))
+    const partial = parseInt($('#partial-bar').data('val'))
+    const failed = parseInt($('#failed-bar').data('val'))
+
+    const total = perfect + partial + failed 
+
+    $('#perfect-bar').css('width', perfect/total*100 + '%')
+    $('#partial-bar').css('width', partial/total*100 + '%')
+    $('#failed-bar').css('width', failed/total*100 + '%')
+</script>
 {% endblock %}

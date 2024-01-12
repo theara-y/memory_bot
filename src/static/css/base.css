@@ -21,14 +21,14 @@ form button {
   /* margin-top: 5px; */
 }
 
-.success-msgs {
+.success {
   color: lime;
 }
 
-.error-msgs {
+.error {
   color: tomato;
 }
 
-.warning-msgs {
+.warning {
   color: yellow;
 }
