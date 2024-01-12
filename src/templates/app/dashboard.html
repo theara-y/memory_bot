@@ -12,18 +12,23 @@
 <h1>Dashboard</h1>
 <p>Hello, {{ current_user.username }}.</p>
 
+{% if stats.next_recall_at %}
 <div class="appt-box">
 <span class="appt next-appt">Next recall test {{ moment(stats.next_recall_at).fromNow() }} on {{ moment(stats.next_recall_at).format('MMM DD YYYY @ h:mm a') }}</span>
 </div>
+{% endif %}
+{% if stats.last_recall_at %}
 <div class="appt-box">
 <span class="appt last-appt">Last recall test was {{ moment(stats.last_recall_at).fromNow() }} on {{ moment(stats.last_recall_at).format('MMM DD YYYY @ h:mm a') }}</span>
 </div>
+{% endif %}
 
 {% if stats.memories_to_test %}
 <p>There are {{ stats.memories_to_test }} pending memories.</p>
 {{ link('app.next_memory_test', 'Test memories') }}
 {% endif %}
 
+{% if stats.active %}
 <table>
     <tr>
         <th colspan="3">Previous Training Results</th>
@@ -55,24 +60,33 @@
         <td>{{ stats.active }}</td>
     </tr>
 </table>
+{% endif %}
 
 {{ link('app.create_memory', 'Create a new memory') }}
 
+{% if stats.total_memories %}
 {% with display = 'View all memories (' ~ stats.total_memories ~ ' Total)' %}
 {{ link('app.view_memories', display) }}
 {% endwith %}
+{% endif %}
 
+{% if stats.active %}
 {% with display = 'View active memories (' ~ stats.active ~ ' Total)' %}
 {{ link('app.view_memories', display) }}
 {% endwith %}
+{% endif %}
 
+{% if stats.inactive %}
 {% with display = 'View inactive memories (' ~ stats.inactive ~ ' Total)' %}
 {{ link('app.view_memories', display) }}
 {% endwith %}
+{% endif %}
 
+{% if stats.completed %}
 {% with display = 'View completed memories (' ~ stats.completed ~ ' Total)' %}
 {{ link('app.view_memories', display) }}
 {% endwith %}
+{% endif %}
 
 {% endblock %}
 
