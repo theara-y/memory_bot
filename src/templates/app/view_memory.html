@@ -1,28 +1,100 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="/static/css/app/view_memory.css">
+{% endblock %}
+
 {% from 'macros.html' import link %}
 
 {% block content %}
-    <h2>Navigation</h2>
-    {{ link('app.dashboard', 'Dashboard') }}
-    {{ link('app.create_memory', 'Create memory') }}
+{{ link('app.dashboard', 'To Dashboard') }}
+{{ link('app.view_memories', 'To View All Memories') }}
 
-    <h1>Memory</h1>
+<h1>Memory</h1>
 
+<p>Status: {{ memory.training_status }}</p>
+{% if memory.next_recall_at %}
+<div class="appt-box">
+    <span class="appt next-appt">Next recall test {{ moment(memory.next_recall_at).fromNow() }} on {{
+        moment(memory.next_recall_at).format('MMM DD YYYY @ h:mm a') }}</span>
+</div>
+{% endif %}
+{% if memory.last_recall_at %}
+<div class="appt-box">
+    <span class="appt last-appt">Last recall test was {{ moment(memory.last_recall_at).fromNow() }} on {{
+        moment(memory.last_recall_at).format('MMM DD YYYY @ h:mm a') }}</span>
+</div>
+{% endif %}
+
+<div id="content-container">
     <a href="{{ url_for('app.edit_memory', id=memory.id) }}">Edit</a>
     <a href="{{ url_for('app.delete_memory', id=memory.id) }}">Delete</a>
-    <p>Prompt: {{ memory.prompt }}</p>
-    <p>Answer: {{ memory.answer }}</p>
-    <p>Status: {{ memory.training_status }}</p>
-    <p>Recallable Duration: {{ memory.recall_duration_days }}</p>
-    <p>Total Recall Attempts: {{ memory.total_recall_count }}</p>
-    <p>Total Perfect Recalls: {{ memory.perfect_recall_count }}</p>
-    <p>Total Partial Recalls: {{ memory.partial_recall_count }}</p>
-    <p>Total Failed Recalls: {{ memory.failed_recall_count }}</p>
-    <p>Last Recall Result: {{ memory.last_recall_count }}</p>
-    <p>Next Recall At: {{ memory.next_recall_at }}</p>
-    <p>Last Recall At: {{ memory.last_recall_at }}</p>
-    <p>Created At: {{ memory.created_at }}</p>
-    <p>Last Modified At: {{ memory.last_modified_at }}</p>
+    <p class="label">Prompt</p>
+    <p class="content">{{ memory.prompt }}</p>
+    <p class="label">Answer</p>
+    <p class="content">{{ memory.answer }}</p>
+</div>
 
+<table>
+    <tr>
+        <th colspan="3">Training Results</th>
+    </tr>
+    <tr>
+        <th>Last Recall Result</th>
+        <td colspan="2" style="text-align: center;">{{ memory.last_recall_outcome }}</td>
+    </tr>
+    <tr>
+        <th>Recall Duration</th>
+        <td colspan="2" style="text-align: center;">{{ memory.recall_duration_days }} days</td>
+    </tr>
+    <tr>
+        <td colspan="2"></td>
+        <td>
+            Count
+        </td>
+    </tr>
+    <tr>
+        <th class="success">Perfect</th>
+        <td class="bar">
+            <div id="perfect-bar" data-val="{{ memory.perfect_recall_count }}"></div>
+        </td>
+        <td class="success">{{ memory.perfect_recall_count }}</td>
+    </tr>
+    <tr>
+        <th class="warning">Partial</th>
+        <td class="bar">
+            <div id="partial-bar" data-val="{{ memory.partial_recall_count }}"></div>
+        </td>
+        <td class="warning">{{ memory.partial_recall_count }}</td>
+    </tr>
+    <tr>
+        <th class="error">Failed</th>
+        <td class="bar">
+            <div id="failed-bar" data-val="{{ memory.failed_recall_count }}"></div>
+        </td>
+        <td class="error">{{ memory.failed_recall_count }}</td>
+    </tr>
+    <tr>
+        <th>Total</th>
+        <td></td>
+        <td>{{ memory.total_recall_count }}</td>
+    </tr>
+</table>
+
+<p class="timestamp">Created At: {{ moment(memory.created_at).format('MMM DD YYYY, h:mm:ss a') }}</p>
+<p class="timestamp">Last Modified At: {{ moment(memory.last_modified_at).format('MMM DD YYYY, h:mm:ss a') }}</p>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const perfect = parseInt($('#perfect-bar').data('val'))
+    const partial = parseInt($('#partial-bar').data('val'))
+    const failed = parseInt($('#failed-bar').data('val'))
+
+    const total = perfect + partial + failed
+
+    $('#perfect-bar').css('width', perfect / total * 100 + '%')
+    $('#partial-bar').css('width', partial / total * 100 + '%')
+    $('#failed-bar').css('width', failed / total * 100 + '%')
+</script>
 {% endblock %}
