@@ -64,10 +64,14 @@ def create_memory():
     return render_template('app/create_memory.html', form=form)
 
 
-@bp.route('/view_memories', methods=['GET'])
-def view_memories():
-    memories = Memory.query.filter_by(user_id=current_user.id).all()
-    return render_template('app/view_memories.html', memories=memories)
+@bp.route('/view_memories/<status>', methods=['GET'])
+def view_memories(status):
+    if status == 'all':
+        memories = Memory.query.filter_by(user_id=current_user.id).all()
+    else:
+        memories = Memory.query.filter_by(user_id=current_user.id, training_status=status).all()
+
+    return render_template('app/view_memories.html', memories=memories, status=status)
 
 
 @bp.route('/view_memory/<int:id>', methods=['GET'])

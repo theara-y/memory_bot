@@ -9,7 +9,7 @@
 {% block content %}
 {{ link('app.dashboard', 'Back to Dashboard') }}
 
-<h1>Memories</h1>
+<h1>{{ status | capitalize }} Memories</h1>
 {{ link('app.create_memory', 'Create a new memory') }}
 
 {% if memories %}

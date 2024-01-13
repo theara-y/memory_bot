@@ -8,7 +8,7 @@
 
 {% block content %}
 {{ link('app.dashboard', 'Back to Dashboard') }}
-{{ link('app.view_memories', 'View All Memories') }}
+<p>> <a href="{{ url_for('app.view_memories', status='all') }}">View all memories</a></p>
 
 <h1>Memory</h1>
 

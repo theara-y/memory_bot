@@ -66,25 +66,25 @@
 
 {% if stats.total_memories %}
 {% with display = 'View all memories (' ~ stats.total_memories ~ ' Total)' %}
-{{ link('app.view_memories', display) }}
+<p>> <a href="{{ url_for('app.view_memories', status='all') }}">{{ display }}</a></p>
 {% endwith %}
 {% endif %}
 
 {% if stats.active %}
 {% with display = 'View active memories (' ~ stats.active ~ ' Total)' %}
-{{ link('app.view_memories', display) }}
+<p>> <a href="{{ url_for('app.view_memories', status='active') }}">{{ display }}</a></p>
 {% endwith %}
 {% endif %}
 
 {% if stats.inactive %}
 {% with display = 'View inactive memories (' ~ stats.inactive ~ ' Total)' %}
-{{ link('app.view_memories', display) }}
+<p>> <a href="{{ url_for('app.view_memories', status='inactive') }}">{{ display }}</a></p>
 {% endwith %}
 {% endif %}
 
 {% if stats.completed %}
 {% with display = 'View completed memories (' ~ stats.completed ~ ' Total)' %}
-{{ link('app.view_memories', display) }}
+<p>> <a href="{{ url_for('app.view_memories', status='completed') }}">{{ display }}</a></p>
 {% endwith %}
 {% endif %}
 
