@@ -56,7 +56,10 @@ def create_memory():
         )
         db.session.add(memory)
         db.session.commit()
+
         flash('Memory created', category='success')
+
+        return redirect(url_for('app.view_memories'))
         
     return render_template('app/create_memory.html', form=form)
 

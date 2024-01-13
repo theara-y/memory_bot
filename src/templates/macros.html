@@ -1,6 +1,6 @@
 {% macro input_errors(field) %}
     {% for error in field.errors %}
-        <div><span class="error-msgs">{{ error }}</span></div>
+        <div class="error">{{ error }}</div>
     {% endfor %}
 {% endmacro %}
 

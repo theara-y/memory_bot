@@ -1,0 +1,66 @@
+h1 {
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid gray;
+}
+
+label {
+    color: white;
+    text-align: center;
+    opacity: 0;
+    transition: all 0.5s;
+}
+
+textarea {
+    padding: 2px;
+    width: 100%;
+    font-size: 26px;
+    border: 0;
+    background: black;
+    color: white;
+    resize: none;
+    text-align: center;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+textarea:placeholder-shown {
+    font-style: italic;
+}
+
+#separator {
+    width: 500px;
+    height: 3px;
+    border: 3px dashed white;
+    background: black;
+    margin: 26px 0 26px 50%;
+    transform: translateX(-50%);
+}
+
+button {
+    border: 1px solid white;
+    background: linear-gradient(to right, cyan 50%, black 50%);
+    background-position-x: 100%;
+    background-size: 201%;
+    color: white;
+    padding: 12px 24px;
+    font-family: 'Lucida Console';
+    margin-top: 26px;
+    transition: .5s ease-in;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+button:hover {
+    color: black;
+    background: linear-gradient(to right, cyan 50%, black 50%);
+    background-position-x: 0%;
+    background-size: 201%;
+    transition: .5s ease-out;
+}
+
+div.error {
+    text-align: center;
+}

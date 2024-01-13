@@ -1,26 +1,74 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="/static/css/app/create_memory.css">
+{% endblock %}
+
 {% from 'macros.html' import link, input_errors %}
 
 {% block content %}
+{{ link('app.dashboard', 'Back to Dashboard') }}
 <h1>Memory Creation</h1>
-
-<p>Create a new below.</p>
 
 <form method="post">
     {{ form.hidden_tag() }}
 
     {{ form.prompt.label() }}
-    {{ form.prompt(cols="50", rows="3") }}
+    {{ form.prompt(cols="50", rows="1", placeholder="Enter prompt here...") }}
     {{ input_errors(form.prompt) }}
 
+    <div id="separator"></div>
+
     {{ form.answer.label() }}
-    {{ form.answer(cols="50", rows="3") }}
+    {{ form.answer(cols="50", rows="1", placeholder="Enter answer here...") }}
     {{ input_errors(form.answer)}}
 
     <button>Create Memory</button>
 </form>
+{% endblock %}
 
-{{ link('app.view_memories', 'View memories') }}
-{{ link('app.dashboard', 'Dashboard') }}
+{% block scripts %}
+<script>
+    const resize = (textarea) => {
+        if (!textarea.val().trim()) {
+            textarea.val('')
+            textarea.prev().css('opacity', 0)
+        } else {
+            textarea.prev().css('opacity', 100)
+        }
+
+        textarea.height('initial')
+        const clientHeight = textarea.prop('clientHeight')
+        const scrollHeight = textarea.prop('scrollHeight')
+        
+        if (scrollHeight > clientHeight) {
+            textarea.height(scrollHeight - 4)
+        }
+    }
+
+    $('document').ready(function() {
+        $('textarea').each(function(idx, textarea) {
+            resize($(textarea))
+        })
+    })
+
+    $('textarea').on('input', function(e) {
+        resize($(this))
+        // if (!$(this).val().trim()) {
+        //     $(this).val('')
+        //     $(this).prev().css('opacity', 0)
+        // } else {
+        //     $(this).prev().css('opacity', 100)
+        // }
+
+        // $(this).height('initial')
+
+        // const clientHeight = $(this).prop('clientHeight')
+        // const scrollHeight = $(this).prop('scrollHeight')
+        
+        // if (scrollHeight > clientHeight) {
+        //     $(this).height(scrollHeight - 4)
+        // }
+    })
+</script>
 {% endblock %}
