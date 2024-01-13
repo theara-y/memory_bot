@@ -1,26 +1,69 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="/static/css/app/edit_memory.css">
+{% endblock %}
+
 {% from 'macros.html' import link, input_errors %}
 
 {% block content %}
-<h1>Edit Memory</h1>
+{{ link('app.dashboard', 'Back to Dashboard') }}
+<p>> <a href="{{ url_for('app.view_memory', id=memory.id) }}">Cancel Update</a></p>
 
-<p>Create a new below.</p>
+<h1>Memory Update</h1>
 
 <form method="post">
     {{ form.hidden_tag() }}
 
-    {{ form.prompt.label() }}
-    {{ form.prompt(cols="50", rows="3") }}
+    <div id="status-container">
+        <span>Status:</span>
+        {% for option in form.status %}
+            {{ option(class_="status") }}
+            {{ option.label(class_="status") }}
+        {% endfor %}
+    </div>
+
+    {{ form.prompt.label(class_="memory") }}
+    {{ form.prompt(placeholder="Update prompt here...") }}
     {{ input_errors(form.prompt) }}
 
-    {{ form.answer.label() }}
-    {{ form.answer(cols="50", rows="3") }}
+    <div id="separator"></div>
+
+    {{ form.answer.label(class_="memory") }}
+    {{ form.answer(placeholder="Update answer here...") }}
     {{ input_errors(form.answer)}}
 
     <button>Update Memory</button>
 </form>
+{% endblock %}
 
-{{ link('app.view_memories', 'View memories') }}
-{{ link('app.dashboard', 'Dashboard') }}
+{% block scripts %}
+<script>
+    const resize = (textarea) => {
+        if (!textarea.val().trim()) {
+            textarea.val('')
+            textarea.prev().css('opacity', 0)
+        } else {
+            textarea.prev().css('opacity', 100)
+        }
+
+        textarea.height('initial')
+        const clientHeight = textarea.prop('clientHeight')
+        const scrollHeight = textarea.prop('scrollHeight')
+
+        if (scrollHeight > clientHeight) {
+            textarea.height(scrollHeight - 4)
+        }
+    }
+
+    $('document').ready(function () {
+        $('textarea').each(function (idx, textarea) {
+            resize($(textarea))
+        })
+    })
+
+    $('textarea').on('input', function (e) {
+        resize($(this))
+    })
+</script>
 {% endblock %}

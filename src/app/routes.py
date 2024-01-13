@@ -81,17 +81,19 @@ def edit_memory(id):
     memory = Memory.query.filter_by(id=id, user_id=current_user.id).first()
     form = EditMemoryForm(
         prompt=memory.prompt,
-        answer=memory.answer
+        answer=memory.answer,
+        status=memory.training_status
     )
 
     if form.validate_on_submit():
         memory.prompt = form.prompt.data
         memory.answer = form.answer.data
+        memory.training_status = form.status.data
         db.session.commit()
         flash('Memory updated', category='success')
         return redirect(url_for('app.view_memory', id=id))
 
-    return render_template('app/edit_memory.html', form=form)
+    return render_template('app/edit_memory.html', form=form, memory=memory)
 
 
 @bp.route('/delete_memory/<int:id>', methods=['GET'])
