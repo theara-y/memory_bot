@@ -12,7 +12,18 @@
 
 <h1>Memory</h1>
 
+<div id="content-container">
+    <a href="{{ url_for('app.edit_memory', id=memory.id) }}">Edit</a>
+    <a href="{{ url_for('app.delete_memory', id=memory.id) }}">Delete</a>
+    <p class="label">Prompt</p>
+    <pre class="content">{{ memory.prompt }}</pre>
+    <p class="label">Answer</p>
+    <pre class="content">{{ memory.answer }}</pre>
+</div>
+
 <p>Status: {{ memory.training_status }}</p>
+
+{% if memory.training_status == 'active' %}
 {% if memory.next_recall_at %}
 <div class="appt-box">
     <span class="appt next-appt">Next recall test {{ moment(memory.next_recall_at).fromNow() }} on {{
@@ -25,15 +36,7 @@
         moment(memory.last_recall_at).format('MMM DD YYYY @ h:mm a') }}</span>
 </div>
 {% endif %}
-
-<div id="content-container">
-    <a href="{{ url_for('app.edit_memory', id=memory.id) }}">Edit</a>
-    <a href="{{ url_for('app.delete_memory', id=memory.id) }}">Delete</a>
-    <p class="label">Prompt</p>
-    <p class="content">{{ memory.prompt }}</p>
-    <p class="label">Answer</p>
-    <p class="content">{{ memory.answer }}</p>
-</div>
+{% endif %}
 
 <table>
     <tr>
