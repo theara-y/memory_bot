@@ -59,7 +59,7 @@ def create_memory():
 
         flash('Memory created', category='success')
 
-        return redirect(url_for('app.view_memories'))
+        return redirect(url_for('app.dashboard'))
         
     return render_template('app/create_memory.html', form=form)
 
@@ -158,6 +158,6 @@ def next_memory_test():
 
     if not memory:
         flash('Training completed for today. Good job!', category='success')
-        return redirect(url_for('app.view_memories'))
+        return redirect(url_for('app.dashboard'))
 
     return redirect(url_for('app.test_memory', id=memory.id))
