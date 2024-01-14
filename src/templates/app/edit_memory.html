@@ -15,7 +15,7 @@
 <form method="post">
     {{ form.hidden_tag() }}
 
-    <div id="status-container">
+    <div id="status-container" class="center">
         <span>Status:</span>
         {% for option in form.status %}
             {{ option(class_="status") }}
@@ -27,13 +27,13 @@
     {{ form.prompt(placeholder="Update prompt here...") }}
     {{ input_errors(form.prompt) }}
 
-    <div id="separator"></div>
+    <div id="separator" class="center"></div>
 
     {{ form.answer.label(class_="memory") }}
     {{ form.answer(placeholder="Update answer here...") }}
     {{ input_errors(form.answer)}}
 
-    <button>Update Memory</button>
+    <button class="center">Update Memory</button>
 </form>
 {% endblock %}
 

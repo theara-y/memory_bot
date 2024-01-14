@@ -11,15 +11,10 @@ a:active {
 }
 
 label,
-input,
-form button {
+input {
   display: block;
-  /* margin: 3px 0; */
 }
 
-form button {
-  /* margin-top: 5px; */
-}
 
 .success {
   color: lime;
@@ -31,4 +26,42 @@ form button {
 
 .warning {
   color: yellow;
+}
+
+.center {
+  margin-left: 50%;
+  transform: translateX(-50%)
+}
+
+/* --- Button --- */
+button {
+  border: 1px solid white;
+  background: linear-gradient(to right, cyan 50%, black 50%);
+  background-position-x: 100%;
+  background-size: 201%;
+  color: white;
+  padding: 12px 24px;
+  font-family: 'Lucida Console';
+  margin-top: 26px;
+  transition: .5s ease-in;
+}
+
+button:hover {
+  color: black;
+  background: linear-gradient(to right, cyan 50%, black 50%);
+  background-position-x: 0%;
+  background-size: 201%;
+  transition: .5s ease-out;
+}
+
+/* --- Table --- */
+table,
+th,
+td {
+  border: 1px dashed white;
+  border-spacing: 5px;
+}
+
+td {
+  padding: 0 5px;
 }
